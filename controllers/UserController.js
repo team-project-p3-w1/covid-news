@@ -32,9 +32,10 @@ class UserController{
                 res.status(200).json({access_token})
             }else{
                 next({name:'Wrong Password or Email'})
+                
             }
         } catch (error) {
-            next(error)
+           next(error)
         }
     }
 }
