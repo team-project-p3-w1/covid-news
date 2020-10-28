@@ -1,21 +1,20 @@
 'use strict'
 require('dotenv').config()
-const expres = require('express')
+const express = require('express')
 const Routes = require('./routes')
 const app = express()
 const port = process.env.PORT || 3000
+const errorHandler = require('./middlewares/ErrorHandler')
 
-app.use(expres.json())
-app.use(expres.urlencoded({extended:false}))
-
-// Deklarasi errorhandler
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
 
 // deklarasi base Route
-app.use("/",Routes)
+app.use(Routes)
 
-
-
+// Deklarasi errorhandler global
+app.use(errorHandler)
 
 app.listen(port,()=>{
   console.log(`
