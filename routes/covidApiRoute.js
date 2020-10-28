@@ -1,7 +1,9 @@
 'use strict'
 const express = require('express');
-const covidApiRoute = express.Router()
+const router = express.Router()
+const CovidApiController = require('../controllers/CovidApiController')
+
+router.get('/', CovidApiController.seedingCovidData)
 
 
-
-module.exports = covidApiRoute
+module.exports = router
