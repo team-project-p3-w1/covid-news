@@ -2,24 +2,50 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcryptjs')
 module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class User extends Model {
+    
     static associate(models) {
       // define association here
     }
   };
-  Users.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    nama: DataTypes.STRING
+  User.init({
+    email: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'Please Fill in your email address'
+        },
+        isEmail:{
+          msg:'Please use your valid email address'
+        }
+      }
+    },
+    password:{
+      type:  DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'Please Fill in your password'
+        }
+      }
+    },
+    nama: {
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'Please Fill in your name'
+        }
+      }
+    }
   }, {
+    hooks:{
+      beforeCreate(user){
+        user.password = bcrypt.hashSync(user.password, 10) //encrypt password
+      }
+    },
     sequelize,
-    modelName: 'Users',
+    modelName: 'User',
   });
-  return Users;
+  return User;
 };
