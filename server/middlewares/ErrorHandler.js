@@ -1,7 +1,7 @@
 module.exports = function errorHandler (err,req,res,next){
     let status 
     let msg = []
-    console.log(err.name)
+    
     if(err.name == 'SequelizeValidationError'){
         status = 400
         for (let i =0; i < err.errors.length; i++){
