@@ -45,8 +45,7 @@ function login(event) {
     fetchData()
   })
   .fail(err => {
-    console.log(err)
-    showError(err.response)
+    showError(err.responseJSON)
   })
 }
 
@@ -71,16 +70,16 @@ function register (event) {
     afterRegister()
   })
   .fail(err => {
-    console.log(err)
-    showError(err.response.error)
+    showError(err.responseJSON)
   })
 }
 
 function showError (error) {
+  console.log(error);
   $("#error").show()
   $("#error").empty()
   $("#error").append(`
-    <p>${error.join(", ")}</p>
+    <p>${error.msg.join(", ")}</p>
   `)
   setTimeout(() => {
     $("#error").hide()
@@ -105,7 +104,7 @@ function fetchData () {
     `)
   })
   .fail(err => {
-    console.log(err)
+    showError(err.responseJSON)
   })
 }
 
@@ -153,7 +152,7 @@ function onSignIn(googleUser) {
 
   })
   .fail(err=>{
-    console.log(err)
+    showError(err.responseJSON)
   })
 }
 //END OAUTH

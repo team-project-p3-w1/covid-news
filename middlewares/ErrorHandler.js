@@ -1,5 +1,6 @@
 module.exports = function errorHandler (err,req,res,next){
     let status 
+    console.log(err);
     let msg = []
     
     if(err.name == 'SequelizeValidationError'){
@@ -25,6 +26,6 @@ module.exports = function errorHandler (err,req,res,next){
 
     
 
-    res.status(status).json({msg})
+    res.status(status).json({msg:[msg]})
 
 }
