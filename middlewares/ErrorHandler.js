@@ -1,6 +1,5 @@
 module.exports = function errorHandler (err,req,res,next){
     let status 
-    console.log(err);
     let msg = []
     
     if(err.name == 'SequelizeValidationError'){
@@ -16,6 +15,18 @@ module.exports = function errorHandler (err,req,res,next){
         }
     }
     if(err.name =='Wrong Password or Email'){
+        status = 400
+        msg = err.name
+    }
+    if(err.name =='Cannot Get Updated COVID DATA'){
+        status = 400
+        msg = err.name
+    }
+    if(err.name =='Cannot Fetch Data'){
+        status = 400
+        msg = err.name
+    }
+    if(err.name =='Cannot Fetch News Data'){
         status = 400
         msg = err.name
     }

@@ -5,7 +5,7 @@ const { CovidData } = require('../models/')
 
 class CovidApiController{
 
-    static seedingCovidData(req, res) { //bisa sekaligus update karena data masuk ke database terus
+    static seedingCovidData(req, res,next) { //bisa sekaligus update karena data masuk ke database terus
         axios({
             method: 'get',
             url: 'https://data.covid19.go.id/public/api/update.json',
@@ -35,11 +35,11 @@ class CovidApiController{
             res.status(201).json(result)
         })
         .catch(err => {
-            console.log(err)
+            next({name:'Cannot Get Updated COVID DATA'})
         })
     }
 
-    static getCovidData (req, res) {
+    static getCovidData (req, res,next) {
         CovidData.findAll({
             order: [ ['tanggal', 'DESC'] ],
             limit: 2
@@ -48,7 +48,7 @@ class CovidApiController{
             res.status(200).json(result)
         })
         .catch(err => {
-            console.log(err)
+            next({name:'Cannot Fetch Data'})
         })
     }
 }
