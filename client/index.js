@@ -1,9 +1,9 @@
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
-  const token = localStorage.getItem("token")
+  const access_token = localStorage.getItem("access_token")
 
-  if (!token) {
+  if (!access_token) {
     $("#login").show()
     $("#register").hide()
     $("#content").hide()
@@ -23,23 +23,21 @@ $(document).ready(function () {
 
 function login(event) {
   event.preventDefault()
-  const username = $("#username").val()
+  const email = $("#email").val()
   const password = $("#password").val()
 
   $.ajax({
     method: "POST",
     url: SERVER + "/login",
     data: {
-      username: username,
+      email: email,
       password: password
     }
   })
   .done(response => {
-    const token = response.token
-    localStorage.setItem("token", token)
-    $("#login").hide()
-    $("#register").hide()
-    $("#content").show()
+    const access_token = response.access_token
+    localStorage.setItem("access_token", access_token)
+    afterLogin()
   })
   .fail(err => {
     console.log(err)
@@ -48,34 +46,73 @@ function login(event) {
 
 function register (event) {
   event.preventDefault()
-  const name = $("#name").val()
-  const username = $("#username").val()
+  const nama = $("#nama").val()
+  const email = $("#email").val()
   const password = $("#password").val()
 
   $.ajax({
     method: "POST",
     url: SERVER + "/register",
     data: {
-      name: name,
-      username: username,
+      nama: nama,
+      email: email,
       password: password
     }
   })
   .done(response => {
-    const token = response.token
-    localStorage.setItem("token", token)
-    $("#login").hide()
-    $("#register").hide()
-    $("#content").show()
+    const access_token = response.access_token
+    localStorage.setItem("access_token", access_token)
+    afterRegister()
   })
   .fail(err => {
     console.log(err)
   })
 }
 
-function logout () {
+function logout() {
+  afterLogout()
+  localStorage.removeItem("access_token")
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
+
+function afterRegister(){
+  $("#login").hide()
+  $("#register").hide()
+  $("#content").show()
+}
+
+function afterLogin(){
+  $("#login").hide()
+  $("#register").hide()
+  $("#content").show()
+}
+
+function afterLogout(){
   $("#login").show()
   $("#register").hide()
   $("#content").hide()
-  localStorage.removeItem("token")
 }
+// OAUTH
+function onSignIn(googleUser) {
+  var google_access_token = googleUser.getAuthResponse().id_token;
+
+  $.ajax({
+    method:'POST',
+    url:'http://localhost:3000/login/googleLogin',
+    data:{
+      google_access_token
+    }
+  })
+  .done(response=>{
+    localStorage.setItem('access_token', response.access_token)
+    afterLogin()
+
+  })
+  .fail(err=>{
+    console.log(err)
+  })
+}
+//END OAUTH
