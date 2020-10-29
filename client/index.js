@@ -40,11 +40,8 @@ function login(event) {
   })
   .done(response => {
     const token = response.access_token
-    localStorage.setItem("token", token)
-    $("#login").hide()
-    $("#register").hide()
-    $("#content").show()
-    $("#error").hide()
+    localStorage.setItem("token", token)    
+    afterLogin()
     fetchData()
   })
   .fail(err => {
@@ -70,10 +67,8 @@ function register (event) {
   })
   .done(response => {
     const token = response.access_token
-    localStorage.setItem("token", token)
-    $("#login").hide()
-    $("#register").hide()
-    $("#content").show()
+    localStorage.setItem("token", token)    
+    afterRegister()
   })
   .fail(err => {
     console.log(err)
@@ -114,10 +109,51 @@ function fetchData () {
   })
 }
 
-function logout () {
+function logout() {
+  afterLogout()
+  localStorage.removeItem("token")
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
+
+function afterRegister(){
+  $("#login").hide()
+  $("#register").hide()
+  $("#content").show()
+}
+
+function afterLogin(){
+  $("#login").hide()
+  $("#register").hide()
+  $("#content").show()
+}
+
+function afterLogout(){
   $("#login").show()
   $("#register").hide()
   $("#content").hide()
   $("#error").hide()
-  localStorage.removeItem("token")
 }
+// OAUTH
+function onSignIn(googleUser) {
+  var google_access_token = googleUser.getAuthResponse().id_token;
+
+  $.ajax({
+    method:'POST',
+    url:'http://localhost:3000/login/googleLogin',
+    data:{
+      google_access_token
+    }
+  })
+  .done(response=>{
+    localStorage.setItem('token', response.access_token)
+    afterLogin()
+
+  })
+  .fail(err=>{
+    console.log(err)
+  })
+}
+//END OAUTH
