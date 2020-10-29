@@ -1,30 +1,34 @@
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
-  const access_token = localStorage.getItem("access_token")
+  const token = localStorage.getItem("token")
 
-  if (!access_token) {
+  if (!token) {
     $("#login").show()
     $("#register").hide()
     $("#content").hide()
+    $("#error").hide()
   }
   else {
     $("#login").hide()
     $("#register").hide()
     $("#content").show()
+    $("#error").hide()
+    fetchData()
   }
 
   $("#btn-register").on("click", function () {
     $("#login").hide()
     $("#register").show()
     $("#content").hide()
+    $("#error").hide()
   })
 })
 
 function login(event) {
   event.preventDefault()
-  const email = $("#email").val()
-  const password = $("#password").val()
+  const email = $("#login-email").val()
+  const password = $("#login-password").val()
 
   $.ajax({
     method: "POST",
@@ -35,20 +39,22 @@ function login(event) {
     }
   })
   .done(response => {
-    const access_token = response.access_token
-    localStorage.setItem("access_token", access_token)
+    const token = response.access_token
+    localStorage.setItem("token", token)    
     afterLogin()
+    fetchData()
   })
   .fail(err => {
     console.log(err)
+    showError(err.response)
   })
 }
 
 function register (event) {
   event.preventDefault()
-  const nama = $("#nama").val()
-  const email = $("#email").val()
-  const password = $("#password").val()
+  const nama = $("#register-name").val()
+  const email = $("#register-email").val()
+  const password = $("#register-password").val()
 
   $.ajax({
     method: "POST",
@@ -60,9 +66,43 @@ function register (event) {
     }
   })
   .done(response => {
-    const access_token = response.access_token
-    localStorage.setItem("access_token", access_token)
+    const token = response.access_token
+    localStorage.setItem("token", token)    
     afterRegister()
+  })
+  .fail(err => {
+    console.log(err)
+    showError(err.response.error)
+  })
+}
+
+function showError (error) {
+  $("#error").show()
+  $("#error").empty()
+  $("#error").append(`
+    <p>${error.join(", ")}</p>
+  `)
+  setTimeout(() => {
+    $("#error").hide()
+  }, 3000)
+}
+
+function fetchData () {
+  const token = localStorage.getItem("token")
+  $.ajax({
+    method: "GET",
+    url: SERVER + "/covid/data",
+    headers: {
+      token: token
+    }
+  })
+  .done(response => {
+    console.log(response)
+    let tanggal = new Date(response[1].tanggal).toISOString().substring(0,10)
+    let tanggal1 = new Date(response[0].tanggal).toISOString().substring(0,10)
+    $("#chart").append(`
+      <img src="https://quickchart.io/chart?c={type:'bar',data:{labels:['${tanggal}','${tanggal1}'], datasets:[{label:'meninggal',data:[${response[1].jumlah_meninggal},${response[0].jumlah_meninggal}]},{label:'sembuh',data:[${response[1].jumlah_sembuh},${response[0].jumlah_sembuh}]},{label:'positif',data:[${response[1].jumlah_positif},${response[0].jumlah_positif}]}]}}">
+    `)
   })
   .fail(err => {
     console.log(err)
@@ -71,7 +111,7 @@ function register (event) {
 
 function logout() {
   afterLogout()
-  localStorage.removeItem("access_token")
+  localStorage.removeItem("token")
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
     console.log('User signed out.');
@@ -94,6 +134,7 @@ function afterLogout(){
   $("#login").show()
   $("#register").hide()
   $("#content").hide()
+  $("#error").hide()
 }
 // OAUTH
 function onSignIn(googleUser) {
@@ -107,7 +148,7 @@ function onSignIn(googleUser) {
     }
   })
   .done(response=>{
-    localStorage.setItem('access_token', response.access_token)
+    localStorage.setItem('token', response.access_token)
     afterLogin()
 
   })

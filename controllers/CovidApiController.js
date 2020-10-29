@@ -38,6 +38,19 @@ class CovidApiController{
             console.log(err)
         })
     }
+
+    static getCovidData (req, res) {
+        CovidData.findAll({
+            order: [ ['tanggal', 'DESC'] ],
+            limit: 2
+        })
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 }
 
 module.exports = CovidApiController
