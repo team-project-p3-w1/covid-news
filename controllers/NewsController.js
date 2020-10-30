@@ -2,8 +2,7 @@
 const axios = require('axios')
 
 class NewsController{
-    static accessNews(req, res) { 
-        const today = new Date()
+    static accessNews(req, res, next) { 
         axios({
             method: 'get',
             url: 'https://newsapi.org/v2/everything',
@@ -20,13 +19,15 @@ class NewsController{
 
             const displayNews = []
             
-            for(let i = 0; i < 5; i++){ //buat ambil 5 berita terbaru ttg covid
+            for(let i = 0; i < 10; i++){ //buat ambil 5 berita terbaru ttg covid
                 let data = {
                     sumber: news[i].source.name,
                     judul: news[i].title,
                     penulis: news[i].author,
                     description: news[i].description,
                     link: news[i].url,
+                    content: news[i].content,
+                    image: news[i].urlToImage,
                     tanggal_terbit : news[i].publishedAt
                 }
                 displayNews.push(data)
@@ -40,6 +41,8 @@ class NewsController{
             console.log(err)
         })
     }
+
+  
 }
 
 module.exports = NewsController

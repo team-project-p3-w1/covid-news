@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600;400;300;200&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+body{
+  background-color: #F1F2F3 ;  
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.positif-color{
+  color:#F2C94C;
+}
+.perawatan-color{
+  color:#F5A623;
+}
+.sembuh-color{
+  color:#219653;
+}
+.meninggal-color{
+  color:#D8232A;
+}
+.media-body{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+.media-foot{
+  border-top:1px solid blanchedalmond;
+  display:flex;
+  justify-self: flex-end;
+}
+.media-content{
+  display: flex;
+  padding-top:15px;
+  padding-right: 15px;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.news-iframe{
+  height:88vh;
+}
+.covid-card-body{
+  display:flex;
+  flex-direction: column;
+  padding:0.5rem;
+  border-radius:7.5px;  
+  background-color:#fff;
+  align-items: center;
+  justify-content: center;
+}
+.covid-card-body > .angka{
+  font-size: 42pt;
+  margin:0;
+  padding:0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.covid-card-body > .angka-label{
+  font-size: 12pt;
+  margin:0;
+  padding:0;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.news-card{
+  background-color: #fff;
+  padding:1rem;
+  border-radius: 7.5px;
+  min-height: 250px;
+  max-height: 300px;
+  display:flex;
+  flex-direction: column;
+  margin-bottom:2rem;
+}
+.news-title{
+  
+  padding:0;
+  margin-bottom: 1rem;
+}
+.news-footer{
+  display: flex;
+}
+.author{
+  display:flex;
+  flex-grow: 1;
+  font-size: 10pt;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 200;
+  font-size: 10pt;
+}
+.published-date{
+  display:flex;
+  align-self: flex-end;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 200;
+  font-size: 10pt;
+}
+.news-desc{
+  flex-grow: 1;
+}
+.date-info{
+  margin:0;
+  font-family: "IBM Plex Mono", monospace;
+}
+.date-info-label{
+  margin:0;
+  font-size: 14pt;
+}
+#content{
+  display: none;
+}
+#covidData{
+  display: none;
+}
+#chart{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+#footer{
+  border-top:2px solid rgb(196, 196, 196);
+  padding:1rem;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: none;
+}
+#register{
+  display:none;
+}
+#error{
+  display:none;
+}
+.navbar{
+  display:none;
+}
