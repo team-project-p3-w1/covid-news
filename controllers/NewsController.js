@@ -38,7 +38,7 @@ class NewsController{
             res.status(201).json(result)
         })
         .catch(err => {
-            console.log(err)
+            next({name:'Cannot Fetch News Data'})
         })
     }
 

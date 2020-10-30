@@ -5,7 +5,7 @@ const { CovidData } = require('../models/')
 
 class CovidApiController{
 
-    static seedingCovidData(req, res) {
+    static seedingCovidData(req, res,next) {
         let dataCovid;
 
         axios({
@@ -65,12 +65,12 @@ class CovidApiController{
             res.status(201).json(result)
         })
         .catch(err => {
-            console.log(err)
+            next({name:'Cannot Get Updated COVID DATA'})
         })
     }
 
 
-    static getCovidData (req, res) {
+    static getCovidData (req, res,next) {
         CovidData.findAll({
             order: [ ['id', 'DESC'] ],
             limit: 2
@@ -79,7 +79,7 @@ class CovidApiController{
             res.status(200).json(result)
         })
         .catch(err => {
-            console.log(err)
+            next({name:'Cannot Fetch Data'})
         })
     }
 }

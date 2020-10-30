@@ -1,4 +1,3 @@
-
 const SERVER = "http://localhost:3000"
 
 $(document).ready(function () {
@@ -36,8 +35,9 @@ function login(event) {
     .done(response => {
       const token = response.access_token
       localStorage.setItem("token", token)
+      $(".user").html(response.nama)
       afterLogin()
-      fetchData()
+      
     })
     .fail(err => {
       showError(err.responseJSON)
@@ -131,6 +131,8 @@ function afterLogin() {
   fetchNews()
 }
 function afterLogout() {
+  const email = $("#login-email").val('')
+  const password = $("#login-password").val('')
   $("#login").show()
   $("#chart").hide()
   $(".navbar").hide()
@@ -157,6 +159,7 @@ function onSignIn(googleUser) {
   })
     .done(response => {
       localStorage.setItem('token', response.access_token)
+      $(".user").html(response.nama)
       afterLogin()
     })
     .fail(err => {
