@@ -185,7 +185,7 @@
   * **Code:** 500 <br />
     **Content:** `{ error : "INTERNAL SERVER ERROR" }`
 
-**GET 5 LATESR NEWS**
+**GET 5 LATEST NEWS**
 ----
   return json data of 5 latest news about COVID
 
