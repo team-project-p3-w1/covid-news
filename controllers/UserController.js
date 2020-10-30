@@ -15,7 +15,7 @@ class UserController{
                 nama:req.body.nama
             }
             let daftar = await User.create(dataUser)
-            res.status(201).json({id:daftar.id, email:daftar.email})
+            res.status(201).json({id:daftar.id, email:daftar.email , nama: daftar.nama})
         
         } catch (error) {
             next(error)
