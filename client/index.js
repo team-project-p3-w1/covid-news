@@ -62,6 +62,7 @@ function register(event) {
     .done(response => {
       const token = response.access_token
       localStorage.setItem("token", token)
+      $(".user").html(response.nama)
       afterRegister()
     })
     .fail(err => {
@@ -215,11 +216,11 @@ function fetchCovidData() {
     method: "GET",
     url: SERVER + "/covid/data"
   }).done(response => {
-    let tanggalRaw = new Date(response[1].tanggal)
+    let tanggalRaw = new Date(response[0].tanggal)
     let tanggal = tanggalRaw.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })
-    $(".d-positif").html(response[1].akumulasi_positif)
-    $(".d-sembuh").html(response[1].akumulasi_sembuh)
-    $(".d-meninggal").html(response[1].akumulasi_meninggal)
+    $(".d-positif").html(response[0].akumulasi_positif)
+    $(".d-sembuh").html(response[0].akumulasi_sembuh)
+    $(".d-meninggal").html(response[0].akumulasi_meninggal)
     $(".date-info").html(tanggal)
   })
 }
