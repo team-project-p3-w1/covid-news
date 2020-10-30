@@ -5,7 +5,7 @@ const { CovidData } = require('../models/')
 
 class CovidApiController{
 
-    static seedingCovidData(req, res) {
+    static seedingCovidData(req, res,next) {
         let dataCovid;
 
         axios({
@@ -70,7 +70,7 @@ class CovidApiController{
     }
 
 
-    static getCovidData (req, res) {
+    static getCovidData (req, res,next) {
         CovidData.findAll({
             order: [ ['id', 'DESC'] ],
             limit: 2

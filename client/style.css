@@ -101,6 +101,9 @@ body{
   margin:0;
   font-size: 14pt;
 }
+.nama-user{
+  display: inline-flex;
+}
 #content{
   display: none;
 }

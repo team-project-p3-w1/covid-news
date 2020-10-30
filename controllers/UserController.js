@@ -32,7 +32,8 @@ class UserController{
             let loginUser = await User.findOne({where:{email:dataUser.email}})
             if(loginUser && bcrypt.compareSync(dataUser.password,loginUser.password)){
                 var access_token = jwt.sign({id:loginUser.id,email:loginUser.email},process.env.SECRET)
-                res.status(200).json({access_token})
+              
+                res.status(200).json({access_token, nama:loginUser.nama})
             }else{
                 next({name:'Wrong Password or Email'})
                 
@@ -60,7 +61,7 @@ class UserController{
             if(cariUser){
                 //generate token
                 let access_token =  jwt.sign({id:cariUser.id,email:cariUser.email},process.env.SECRET)
-                res.status(200).json({access_token})
+                res.status(200).json({access_token, nama:cariUser.nama})
             }else{
                 //asumsi login pakai id google tidak bisa pakai password emailnya
                 let dataBaru = {
@@ -70,6 +71,7 @@ class UserController{
                 }
                 let buatUser = await User.create(dataBaru)
                 let access_token =  jwt.sign({id:buatUser.id,email:buatUser.email},process.env.SECRET)
+               
                 res.status(200).json({access_token})
             }
         }
