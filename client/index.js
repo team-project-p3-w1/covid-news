@@ -117,7 +117,13 @@ function logout() {
 function afterRegister() {
   $("#login").hide()
   $("#register").hide()
+  $(".navbar").show()
+  $("#footer").css({ "display": "flex" })
+  $("#chart").css({ "display": "flex" })
   $("#content").show()
+  $("#covidData").show()
+  fetchData()
+  fetchNews()
 }
 function afterLogin() {
   $("#login").hide()
