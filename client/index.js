@@ -82,6 +82,7 @@ function showError(error) {
 }
 
 function fetchData() {
+  $("#chart").empty()
   const token = localStorage.getItem("token")
   $.ajax({
     method: "GET",
@@ -92,13 +93,12 @@ function fetchData() {
   })
     .done(response => {
       console.log(response)
-      // let tanggal = new Date(response[1].tanggal).toISOString().substring(0, 10)
-      // let tanggal1 = new Date(response[0].tanggal).toISOString().substring(0, 10)
-      $("#chart").append(`
-        <img style="width:600px" src="https://quickchart.io/chart?c={type:'pie',data:{labels:['Meninggal','Sembuh','Positif'], datasets:[{data:[${response[1].akumulasi_meninggal},${response[1].akumulasi_sembuh},${response[1].akumulasi_positif}]} ]} }">
-      
-      `)
-      // <img style="width:600px" src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Kemarin','Hari ini'], datasets:[{label:'meninggal',data:[${response[1].jumlah_meninggal},${response[0].jumlah_meninggal}]},{label:'sembuh',data:[${response[1].jumlah_sembuh},${response[0].jumlah_sembuh}]},{label:'positif',data:[${response[1].jumlah_positif},${response[0].jumlah_positif}]}]}}">
+      let tanggal = new Date(response[1].tanggal).toISOString().substring(0, 10)
+      let tanggal1 = new Date(response[0].tanggal).toISOString().substring(0, 10)
+      $("#chart").append(
+        //<img style="width:600px" src="https://quickchart.io/chart?c={type:'pie',data:{labels:['Meninggal','Sembuh','Positif'], datasets:[{data:[${response[1].akumulasi_meninggal},${response[1].akumulasi_sembuh},${response[1].akumulasi_positif}]} ]} }">
+        `<img style="width:600px" src="https://quickchart.io/chart?c={type:'bar',data:{labels:['Kemarin','Hari ini'], datasets:[{label:'meninggal',data:[${response[1].jumlah_meninggal},${response[0].jumlah_meninggal}]},{label:'sembuh',data:[${response[1].jumlah_sembuh},${response[0].jumlah_sembuh}]},{label:'positif',data:[${response[1].jumlah_positif},${response[0].jumlah_positif}]}]}}">`
+      )
     })
     .fail(err => {
       showError(err.responseJSON)
@@ -126,6 +126,7 @@ function afterLogin() {
   $("#footer").css({ "display": "flex" })
   $("#chart").css({ "display": "flex" })
   $("#covidData").show()
+  $("error").hide()
   fetchData()
   fetchNews()
 }
