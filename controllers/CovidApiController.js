@@ -5,21 +5,51 @@ const { CovidData } = require('../models/')
 
 class CovidApiController{
 
-    static seedingCovidData(req, res) { //bisa sekaligus update karena data masuk ke database terus
+    static seedingCovidData(req, res) {
+        let dataCovid;
+
         axios({
             method: 'get',
             url: 'https://data.covid19.go.id/public/api/update.json',
         }) 
         .then(res => {
-            const result = res.data.update
+            dataCovid = res.data.update.harian
+
+            const x = dataCovid.length - 2
+            console.log(dataCovid[x])
             
-            const jumlah_meninggal = result.penambahan.jumlah_meninggal
-            const jumlah_sembuh = result.penambahan.jumlah_sembuh
-            const jumlah_positif = result.penambahan.jumlah_positif
-            const akumulasi_meninggal = result.total.jumlah_meninggal
-            const akumulasi_sembuh = result.total.jumlah_sembuh
-            const akumulasi_positif = result.total.jumlah_positif
-            const tanggal = result.penambahan.tanggal
+            const jumlah_meninggal = dataCovid[x].jumlah_meninggal.value
+            const jumlah_sembuh = dataCovid[x].jumlah_sembuh.value
+            const jumlah_positif = dataCovid[x].jumlah_positif.value
+            const akumulasi_meninggal = dataCovid[x].jumlah_meninggal_kum.value
+            const akumulasi_sembuh = dataCovid[x].jumlah_sembuh_kum.value
+            const akumulasi_positif = dataCovid[x].jumlah_positif_kum.value
+            const tanggal = dataCovid[x].key_as_string
+
+            
+            
+            return CovidData.create({
+                jumlah_meninggal,
+                jumlah_sembuh,
+                jumlah_positif,
+                akumulasi_meninggal,
+                akumulasi_sembuh,
+                akumulasi_positif,
+                tanggal
+            })
+        })
+        .then(result => {
+            const x = dataCovid.length - 1
+            console.log(dataCovid[x])
+            const jumlah_meninggal = dataCovid[x].jumlah_meninggal.value
+            const jumlah_sembuh = dataCovid[x].jumlah_sembuh.value
+            const jumlah_positif = dataCovid[x].jumlah_positif.value
+            const akumulasi_meninggal = dataCovid[x].jumlah_meninggal_kum.value
+            const akumulasi_sembuh = dataCovid[x].jumlah_sembuh_kum.value
+            const akumulasi_positif = dataCovid[x].jumlah_positif_kum.value
+            const tanggal = dataCovid[x].key_as_string
+
+            
             
             return CovidData.create({
                 jumlah_meninggal,
@@ -39,9 +69,10 @@ class CovidApiController{
         })
     }
 
+
     static getCovidData (req, res) {
         CovidData.findAll({
-            order: [ ['tanggal', 'DESC'] ],
+            order: [ ['id', 'DESC'] ],
             limit: 2
         })
         .then(result => {
